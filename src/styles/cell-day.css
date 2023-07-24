@@ -1,0 +1,19 @@
+.cell-day {
+    width: 15px;
+    height: 15px;
+    background-color: #EDEDED;
+}
+
+.cell-day:hover {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.cell-day:active {
+    background-color: #527BA0;
+    border: 1px solid rgba(0, 0, 0, 0.9);
+}
+
+.cell-day.selected {
+    background-color: #527BA0;
+    border: 1px solid rgba(0, 0, 0, 0.9);
+}
