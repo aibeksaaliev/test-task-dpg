@@ -1,27 +1,51 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import "../../styles/contribution-graph.css";
 import CellDay from "./CellDay";
+import {axiosApi} from "../../axiosApi";
+import dayjs from "dayjs";
+import {ContributionCell} from "../../types";
 
 const ContributionGraph = () => {
-    const generate365 = () => {
-        const days = [];
-        const today = new Date();
-        let yearBefore = new Date(today.getTime());
-        yearBefore.setDate(today.getDate() - 357);
+    const [contributions, setContributions] = useState<ContributionCell[]>([]);
+    const getContributions = async () => {
+        const response = await axiosApi.get("calendar.json");
+        return response.data;
+    };
+
+    const generateCellDays = async () => {
+        const contributionsList = await getContributions();
+        const days: ContributionCell[] = [];
+        const today = dayjs();
+        let yearBefore = dayjs(today).subtract(357, 'day');
 
         for (let i = 0; i < 357; i++) {
-            let generatedDay = new Date(yearBefore);
-            generatedDay.setDate(yearBefore.getDate() + i);
-            days.push(generatedDay);
+            const generatedDay = dayjs(yearBefore).add(i, 'day');
+            const date: string = generatedDay.format('YYYY-MM-DD');
+            days.push({date, amount: 0});
         }
 
-        return days;
+        days.forEach((day) => {
+            Object.entries(contributionsList).forEach((contribution) => {
+                if (day.date === contribution[0]) {
+                    day.amount = contribution[1] as number;
+                }
+            });
+        });
+
+        setContributions(days);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await generateCellDays();
+        };
+        fetchData();
+    }, [])
 
     return (
         <div className="contribution-graph">
-            {generate365().map((day) => {
-                return <CellDay key={day.toISOString()} day={day.toISOString()}/>;
+            {contributions.map((day) => {
+                return <CellDay key={day.date} day={day}/>;
             })}
         </div>
     );
