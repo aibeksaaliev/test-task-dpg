@@ -1,0 +1,9 @@
+.contribution-graph {
+    width: 780px;
+    height: 120px;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 2px;
+}
