@@ -1,9 +1,112 @@
+:root {
+    --square-size: 15px;
+    --square-gap: 2px;
+    --week-width: calc(var(--square-size) + var(--square-gap));
+}
+
+.contribution-graph-months { grid-area: contribution-graph-months; }
+.contribution-graph-days { grid-area: contribution-graph-days; }
+.contribution-graph-cells { grid-area: contribution-graph-cells; }
+
 .contribution-graph {
-    width: 780px;
-    height: 120px;
-    background-color: #FFFFFF;
+    display: inline-grid;
+    grid-template-areas: "empty contribution-graph-months"
+                       "contribution-graph-days contribution-graph-cells";
+    grid-template-columns: auto 1fr;
+    grid-gap: 2px;
+    margin-top: 100px;
+}
+
+.contribution-graph-months {
+    display: grid;
+}
+
+.contribution-graph-months-list {
+    list-style: none;
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 2px;
+    justify-content: space-between;
+    padding-left: 0;
+    margin: 0;
+}
+
+.contribution-graph-days-list {
+    list-style: none;
+    margin: 0;
+}
+
+.contribution-graph-month-item {
+    text-transform: capitalize;
+}
+
+.contribution-graph-day-item {
+    margin-bottom: 2px;
+    text-transform: capitalize;
+}
+
+.contribution-graph-days-list li.contribution-graph-day-item:last-child,
+.contribution-graph-days-list li.contribution-graph-day-item:nth-child(even) {
+    content: "";
+    overflow: hidden;
+    text-indent: -15px;
+}
+
+.contribution-graph-month-item, .contribution-graph-day-item {
+    font-size: 12px;
+    line-height: 15px;
+    color: #959494;
+}
+
+.contribution-graph-days, .contribution-graph-cells {
+    display: grid;
+    grid-gap: var(--square-gap);
+    grid-template-rows: repeat(7, var(--square-size));
+}
+
+.contribution-graph-cells {
+    grid-auto-flow: column;
+    grid-auto-columns: var(--square-size);
+}
+
+.contribution-graph-info {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    margin-left: 57px;
+    color: #959494;
+    font-size: 8px;
+    line-height: 10px;
+}
+
+.contribution-graph-info-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.contribution-graph-info-item {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background-color: #EDEDED;
+    margin: 2px;
+    overflow: hidden;
+    text-indent: -20px;
+}
+
+.color1-9 {
+    background-color: #ACD5F2;
+}
+
+.color10-19 {
+    background-color: #7FA8C9;
+}
+
+.color20-29 {
+    background-color: #527BA0;
+}
+
+.color30 {
+    background-color: #254E77;
 }
