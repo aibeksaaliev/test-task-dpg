@@ -2,6 +2,7 @@
     width: 15px;
     height: 15px;
     background-color: #EDEDED;
+    box-sizing: border-box;
 }
 
 .cell-day:hover {

@@ -1,10 +1,13 @@
 import React from 'react';
 import "../../styles/cell-day.css";
 
-const CellDay = () => {
+interface Props {
+    day: string;
+}
+
+const CellDay: React.FC<Props> = ({day}) => {
     return (
         <div className="cell-day">
-
         </div>
     );
 };
