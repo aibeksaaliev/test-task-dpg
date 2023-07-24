@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import "../../styles/contribution-graph.css";
 import CellDay from "./CellDay";
 import {axiosApi} from "../../axiosApi";
@@ -10,19 +10,21 @@ const ContributionGraph = () => {
     const [contributions, setContributions] = useState<ContributionCell[]>([]);
     const [months, setMonths] = useState<string[]>([]);
 
+    // Function for fetching contributions from API
     const getContributions = async () => {
         const response = await axiosApi.get("calendar.json");
         return response.data;
     };
 
-    const generateCellDays = async () => {
+    // Function for generating cell days with contributions from API, according to current date
+    const generateCellDays = useCallback(async () => {
         const contributionsList = await getContributions();
         const days: ContributionCell[] = [];
         const months: string[] = [];
         const today = dayjs();
         let yearBefore = dayjs(today).subtract(357, 'day');
 
-        for (let i = 1; i <= 357; i++) {
+        for (let i = 0; i < 351; i++) {
             const generatedDay = dayjs(yearBefore).add(i, 'day');
             const date: string = generatedDay.format('YYYY-MM-DD');
             days.push({date, amount: 0});
@@ -42,9 +44,8 @@ const ContributionGraph = () => {
         });
 
         setMonths(months);
-
         setContributions(days);
-    };
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,7 +53,7 @@ const ContributionGraph = () => {
         };
 
         fetchData().catch(console.error);
-    }, []);
+    }, [generateCellDays]);
 
     return (
         <>

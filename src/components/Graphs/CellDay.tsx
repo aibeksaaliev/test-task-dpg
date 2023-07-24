@@ -10,6 +10,8 @@ interface Props {
 
 const CellDay: React.FC<Props> = ({day}) => {
     const [popup, setPopup] = useState<boolean>(false);
+
+    // Function for defining color status of contribution cell
     const detectContributionCellColor = (day: ContributionCell) => {
         if (day.amount >= 1 && day.amount <= 9) {
             return 'light-blue';
@@ -24,19 +26,14 @@ const CellDay: React.FC<Props> = ({day}) => {
         }
     };
 
-    const formatDateToRussian = (inputDate: string) => {
-        const date = dayjs(inputDate);
-        return date.locale('ru').format('dddd, MMMM DD, YYYY');
-    };
-
-    const inputDate = day.date;
-    const formattedDate = formatDateToRussian(inputDate);
-
-    const handleMouseEnter = () => {
+    const formattedDate = dayjs(day.date).locale('ru').format('dddd, MMMM DD, YYYY');
+    const handleMouseEnter = (e: React.MouseEvent) => {
+        e.preventDefault();
         setPopup(true);
     };
 
-    const handleMouseLeave = () => {
+    const handleMouseLeave = (e: React.MouseEvent) => {
+        e.preventDefault();
         setPopup(false);
     };
 
@@ -60,4 +57,4 @@ const CellDay: React.FC<Props> = ({day}) => {
     );
 };
 
-export default CellDay;
+export default React.memo(CellDay);
